@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { FlatList, SafeAreaView, Text, View, ActivityIndicator } from 'react-native';
 import { getData } from '../../data/getData';
 
@@ -23,18 +23,27 @@ export default function Page() {
         fetchData();
     }, [name]);
 
-    type ItemProps = { title: string };
+    const renderItem = ({ item }: { item: any }) => {
+        // Extraer el modelo del primer atributo
+        const modelo = item.attributes.find((attr: any) => attr.name === "Modelo")?.value_name;
 
-    const Item = ({ title }: ItemProps) => (
-        <View style={{
-            backgroundColor: '#f9c2ff',
-            padding: 20,
-            marginVertical: 8,
-            marginHorizontal: 16,
-        }}>
-            <Text style={{ fontSize: 32 }}>{title}</Text>
-        </View>
-    );
+        return (
+            <Link
+                style={{
+                    backgroundColor: '#f9c2ff',
+                    padding: 20,
+                    marginVertical: 8,
+                    marginHorizontal: 16,
+                }}
+                href={{
+                    pathname: "/brand/description/[description]",
+                    params: { description: modelo || name }
+                }}
+            >
+                <Text style={{ fontSize: 32 }}>{item.title}</Text>
+            </Link>
+        );
+    };
 
     return (
         <SafeAreaView style={{
@@ -46,7 +55,7 @@ export default function Page() {
             ) : (
                 <FlatList
                     data={data}
-                    renderItem={({ item }) => <Item title={item.title} />}
+                    renderItem={renderItem}
                     keyExtractor={item => item.id}
                 />
             )}

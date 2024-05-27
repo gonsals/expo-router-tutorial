@@ -11,7 +11,7 @@ export default function Page() {
                 <Link
                     key={category.id}
                     href={{
-                        pathname: "/users/[name]",
+                        pathname: "/brand/[name]",
                         params: { name: category.name }
                     }}>
                     < View style={{ width: 180, height: 180, backgroundColor: `${category.color}`, justifyContent: 'center', alignItems: "center" }}>
